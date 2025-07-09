@@ -6,7 +6,10 @@ set(POLYKAMI_SOURCES
 
         # Window
         window/Window.cpp
-        window/Window_Impl.cpp
+        window/window_Impl.cpp
+
+        # Rendering
+        rendering/shader.cpp
 )
 
 # Create the library

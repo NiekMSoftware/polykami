@@ -3,25 +3,25 @@
 //
 
 #include "polykami/window/window.h"
-#include "window/Window_Impl.h"
+#include "window/window_impl.h"
 #include <stdexcept>
 
 namespace polykami::window {
-    window::window(const WindowProperties &props)
+    Window::Window(const WindowProperties &props)
         : pImpl(std::make_unique<Impl>(props)) {
         if (!initialize()) {
             throw std::runtime_error("Failed to initialize window");
         }
     }
 
-    window::~window() {
+    Window::~Window() {
         pImpl->shutdown();
     }
 
-    window::window(window && other) noexcept
+    Window::Window(Window && other) noexcept
         : pImpl(std::move(other.pImpl)) { }
 
-    window& window::operator=(window && other) noexcept {
+    Window& Window::operator=(Window && other) noexcept {
         if (this != &other) {
             // Clean up current resources
             if (pImpl) {
@@ -34,59 +34,59 @@ namespace polykami::window {
         return *this;
     }
 
-    bool window::initialize() const {
+    bool Window::initialize() const {
         return pImpl->initialize();
     }
 
-    void window::update() const {
+    void Window::update() const {
         pImpl->update();
     }
 
-    void window::shutdown() const {
+    void Window::shutdown() const {
         pImpl->shutdown();
     }
 
-    bool window::shouldClose() const {
+    bool Window::shouldClose() const {
         return pImpl->shouldClose();
     }
 
-    void window::swapBuffers() const {
+    void Window::swapBuffers() const {
         pImpl->swapBuffers();
     }
 
-    unsigned int window::getWidth() const {
+    unsigned int Window::getWidth() const {
         return pImpl->getWidth();
     }
 
-    unsigned int window::getHeight() const {
+    unsigned int Window::getHeight() const {
         return pImpl->getHeight();
     }
 
-    void window::setSize(const unsigned int width, const unsigned int height) const {
+    void Window::setSize(const unsigned int width, const unsigned int height) const {
         pImpl->setSize(width, height);
     }
 
-    void window::setTitle(const std::string &title) const {
+    void Window::setTitle(const std::string &title) const {
         pImpl->setTitle(title);
     }
 
-    void window::setVSync(const bool enabled) const {
+    void Window::setVSync(const bool enabled) const {
         pImpl->setVSync(enabled);
     }
 
-    void * window::getNativeWindow() const {
+    void * Window::getNativeWindow() const {
         return pImpl->getNativeWindow();
     }
 
-    void window::setResizeCallback(const ResizeCallback &resizeCallback) const {
+    void Window::setResizeCallback(const ResizeCallback &resizeCallback) const {
         pImpl->setResizeCallback(resizeCallback);
     }
 
-    void window::setKeyCallback(const KeyCallback &keyCallback) const {
+    void Window::setKeyCallback(const KeyCallback &keyCallback) const {
         pImpl->setKeyCallback(keyCallback);
     }
 
-    void window::setMouseCallback(const MouseCallback &mouseCallback) const {
+    void Window::setMouseCallback(const MouseCallback &mouseCallback) const {
         pImpl->setMouseCallback(mouseCallback);
     }
 

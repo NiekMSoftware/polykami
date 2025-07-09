@@ -10,7 +10,7 @@
 
 namespace polykami::window {
 
-    class window::Impl {
+    class Window::Impl {
     public:
         explicit Impl(const WindowProperties& properties);
         ~Impl();

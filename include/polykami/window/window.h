@@ -21,16 +21,16 @@ namespace polykami::window {
         bool resizable = true;
     };
 
-    class window {
+    class Window {
     public:
-        explicit window(const WindowProperties& props = WindowProperties{});
-        ~window();
+        explicit Window(const WindowProperties& props = WindowProperties{});
+        ~Window();
 
         // Non-copyable but moveable
-        window(const window&) = delete;
-        window& operator=(const window&) = delete;
-        window(window&&) noexcept;
-        window& operator=(window&&) noexcept;
+        Window(const Window&) = delete;
+        Window& operator=(const Window&) = delete;
+        Window(Window&&) noexcept;
+        Window& operator=(Window&&) noexcept;
 
         void update() const;
         void shutdown() const;

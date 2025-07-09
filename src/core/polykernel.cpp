@@ -15,7 +15,7 @@ namespace polykami::core {
 
             // initialize window
             WindowProperties props{};
-            pWindow = std::make_unique<window>(props);
+            pWindow = std::make_unique<Window>(props);
 
             // load GLAD
             pImpl->loadGLAD();

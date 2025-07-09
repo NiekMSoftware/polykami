@@ -33,11 +33,11 @@ namespace polykami::core {
         void clearFrame(float r = 0.2f, float g = 0.3f, float b = 0.4f, float a = 1.0f) const;
 
         // === Getters ===
-        [[nodiscard]] window* getWindow() const { return pWindow.get(); }
+        [[nodiscard]] Window* getWindow() const { return pWindow.get(); }
 
     private:
         // === context objects ===
-        std::unique_ptr<window> pWindow;
+        std::unique_ptr<Window> pWindow;
 
         // === pImpl idiom ===
         class Impl;
