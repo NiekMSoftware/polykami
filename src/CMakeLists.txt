@@ -1,5 +1,9 @@
 # Collect all source files
 set(POLYKAMI_SOURCES
+        # Core
+        core/Polykernel.cpp
+        core/Polykernel_Impl.cpp
+
         # Window
         window/Window.cpp
         window/Window_Impl.cpp

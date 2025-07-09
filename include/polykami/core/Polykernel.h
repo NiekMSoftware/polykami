@@ -24,6 +24,14 @@ namespace polykami::core {
         Polykernel(Polykernel&&) noexcept;
         Polykernel& operator=(Polykernel&&) noexcept;
 
+        // === OpenGL loader functions
+        void initializeOpenGL() const;
+        void cleanup() const;
+
+        // === OpenGL functions
+        void setViewport(int width, int height) const;
+        void clearFrame(float r = 0.2f, float g = 0.3f, float b = 0.4f, float a = 1.0f) const;
+
     private:
         // === context objects ===
         std::unique_ptr<Window> pWindow;
@@ -34,7 +42,5 @@ namespace polykami::core {
     };
 
 }  // polykami::core
-
-
 
 #endif //POLYKERNEL_H

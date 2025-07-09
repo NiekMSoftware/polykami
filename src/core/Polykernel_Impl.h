@@ -10,7 +10,19 @@
 namespace polykami::core {
 
     class Polykernel::Impl {
+    public:
+        Impl();
+        ~Impl();
 
+        void initializeOpenGL();
+        void cleanup();
+
+        // === OpenGL functions
+        void setViewport(int width, int height) const;
+        void clearFrame(float r, float g, float b, float a) const;
+
+    private:
+        bool initialized;
     };
 
 }  // polykami::core
