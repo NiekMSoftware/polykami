@@ -2,20 +2,20 @@
 // Created by niek on 2025/07/09.
 //
 
-#include "polykami/core/Polykernel.h"
+#include "polykami/core/polykernel.h"
 #include "core/Polykernel_Impl.h"
 #include <iostream>
 
 namespace polykami::core {
 
-    Polykernel::Polykernel() : pImpl(std::make_unique<Impl>()) {
+    polykernel::polykernel() : pImpl(std::make_unique<Impl>()) {
         try {
             // initialize OpenGL
             pImpl->initializeOpenGL();
 
             // initialize window
             WindowProperties props{};
-            pWindow = std::make_unique<Window>(props);
+            pWindow = std::make_unique<window>(props);
 
             // load GLAD
             pImpl->loadGLAD();
@@ -32,14 +32,14 @@ namespace polykami::core {
         }
     }
 
-    Polykernel::~Polykernel() {
+    polykernel::~polykernel() {
         pImpl->cleanup();
     }
 
-    Polykernel::Polykernel(Polykernel&& other) noexcept
+    polykernel::polykernel(polykernel&& other) noexcept
         : pWindow(std::move(other.pWindow)), pImpl(std::move(other.pImpl)) { }
 
-    Polykernel & Polykernel::operator=(Polykernel&& other) noexcept {
+    polykernel & polykernel::operator=(polykernel&& other) noexcept {
         if (this != &other) {
             // Clean up current resources
             if (pImpl) {
@@ -53,19 +53,19 @@ namespace polykami::core {
         return *this;
     }
 
-    void Polykernel::initializeOpenGL() const {
+    void polykernel::initializeOpenGL() const {
         pImpl->initializeOpenGL();
     }
 
-    void Polykernel::cleanup() const {
+    void polykernel::cleanup() const {
         pImpl->cleanup();
     }
 
-    void Polykernel::setViewport(const int width, const int height) const {
+    void polykernel::setViewport(const int width, const int height) const {
         pImpl->setViewport(width, height);
     }
 
-    void Polykernel::clearFrame(const float r, const float g, const float b, const float a) const {
+    void polykernel::clearFrame(const float r, const float g, const float b, const float a) const {
         pImpl->clearFrame(r, g, b, a);
     }
 

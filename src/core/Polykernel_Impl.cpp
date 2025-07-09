@@ -10,10 +10,10 @@
 
 namespace polykami::core {
 
-    Polykernel::Impl::Impl() : initialized(false) { }
-    Polykernel::Impl::~Impl() = default;
+    polykernel::Impl::Impl() : initialized(false) { }
+    polykernel::Impl::~Impl() = default;
 
-    void Polykernel::Impl::initializeOpenGL() {
+    void polykernel::Impl::initializeOpenGL() {
         if (!glfwInit()) {
             throw std::runtime_error("Failed to initialize GLFW");
         }
@@ -25,26 +25,26 @@ namespace polykami::core {
         initialized = true;
     }
 
-    void Polykernel::Impl::loadGLAD() {
+    void polykernel::Impl::loadGLAD() {
         if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
             throw std::runtime_error("Failed to initialize GLAD");
         }
     }
 
-    void Polykernel::Impl::cleanup() {
+    void polykernel::Impl::cleanup() {
         if (initialized) {
             glfwTerminate();
             initialized = false;
         }
     }
 
-    void Polykernel::Impl::setViewport(const int width, const int height) const {
+    void polykernel::Impl::setViewport(const int width, const int height) const {
         if (initialized) {
             glViewport(0, 0, width, height);
         }
     }
 
-    void Polykernel::Impl::clearFrame(const float r, const float g, const float b, const float a) const {
+    void polykernel::Impl::clearFrame(const float r, const float g, const float b, const float a) const {
         if (initialized) {
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);

@@ -5,11 +5,11 @@
 #ifndef POLYKERNEL_IMPL_H
 #define POLYKERNEL_IMPL_H
 
-#include "polykami/core/Polykernel.h"
+#include "polykami/core/polykernel.h"
 
 namespace polykami::core {
 
-    class Polykernel::Impl {
+    class polykernel::Impl {
     public:
         Impl();
         ~Impl();

@@ -5,12 +5,12 @@
 #ifndef WINDOW_IMPL_H
 #define WINDOW_IMPL_H
 
-#include "polykami/window/Window.h"
+#include "polykami/window/window.h"
 #include <GLFW/glfw3.h>
 
 namespace polykami::window {
 
-    class Window::Impl {
+    class window::Impl {
     public:
         explicit Impl(const WindowProperties& properties);
         ~Impl();

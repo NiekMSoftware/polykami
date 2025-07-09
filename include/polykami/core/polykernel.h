@@ -6,23 +6,23 @@
 #define POLYKERNEL_H
 
 #include <memory>
-#include "polykami/window/Window.h"
+#include "polykami/window/window.h"
 
 // === namespace inclusion ===
 using namespace polykami::window;
 
 namespace polykami::core {
 
-    class Polykernel {
+    class polykernel {
     public:
-        Polykernel();
-        ~Polykernel();
+        polykernel();
+        ~polykernel();
 
         // Non-copyable but moveable
-        Polykernel(const Polykernel&) = delete;
-        Polykernel& operator=(const Polykernel&) = delete;
-        Polykernel(Polykernel&&) noexcept;
-        Polykernel& operator=(Polykernel&&) noexcept;
+        polykernel(const polykernel&) = delete;
+        polykernel& operator=(const polykernel&) = delete;
+        polykernel(polykernel&&) noexcept;
+        polykernel& operator=(polykernel&&) noexcept;
 
         // === OpenGL loader functions
         void initializeOpenGL() const;
@@ -33,11 +33,11 @@ namespace polykami::core {
         void clearFrame(float r = 0.2f, float g = 0.3f, float b = 0.4f, float a = 1.0f) const;
 
         // === Getters ===
-        [[nodiscard]] Window* getWindow() const { return pWindow.get(); }
+        [[nodiscard]] window* getWindow() const { return pWindow.get(); }
 
     private:
         // === context objects ===
-        std::unique_ptr<Window> pWindow;
+        std::unique_ptr<window> pWindow;
 
         // === pImpl idiom ===
         class Impl;

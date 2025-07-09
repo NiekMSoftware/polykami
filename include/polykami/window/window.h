@@ -21,18 +21,17 @@ namespace polykami::window {
         bool resizable = true;
     };
 
-    class Window {
+    class window {
     public:
-        explicit Window(const WindowProperties& props = WindowProperties{});
-        ~Window();
+        explicit window(const WindowProperties& props = WindowProperties{});
+        ~window();
 
         // Non-copyable but moveable
-        Window(const Window&) = delete;
-        Window& operator=(const Window&) = delete;
-        Window(Window&&) noexcept;
-        Window& operator=(Window&&) noexcept;
+        window(const window&) = delete;
+        window& operator=(const window&) = delete;
+        window(window&&) noexcept;
+        window& operator=(window&&) noexcept;
 
-        bool initialize() const;
         void update() const;
         void shutdown() const;
 
@@ -58,6 +57,8 @@ namespace polykami::window {
         void setMouseCallback(const MouseCallback &mouseCallback) const;
 
     private:
+        [[nodiscard]] bool initialize() const;
+
         class Impl;
         std::unique_ptr<Impl> pImpl;
     };
