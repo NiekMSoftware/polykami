@@ -17,23 +17,23 @@ namespace polykami::core::window {
 
         bool initialize();
         void update();
-        void shutdown();
+        void shutdown() const;
 
         [[nodiscard]] bool shouldClose() const;
-        void swapBuffers();
+        void swapBuffers() const;
 
         [[nodiscard]] unsigned int getWidth() const { return properties.width; }
         [[nodiscard]] unsigned int getHeight() const { return properties.height; }
         void setSize(unsigned int width, unsigned int height);
 
-        void setTitle(const std::string& title);
+        void setTitle(const std::string& title) const;
         void setVSync(bool enabled);
 
         [[nodiscard]] void* getNativeWindow() const { return window; }
 
-        void setResizeCallback(ResizeCallback callback);
-        void setKeyCallback(KeyCallback callback);
-        void setMouseCallback(MouseCallback callback);
+        void setResizeCallback(const ResizeCallback &callback);
+        void setKeyCallback(const KeyCallback &callback);
+        void setMouseCallback(const MouseCallback &callback);
 
     private:
         GLFWwindow* window;

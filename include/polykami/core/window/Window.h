@@ -32,30 +32,30 @@ namespace polykami::core::window {
         Window(Window&&) noexcept;
         Window& operator=(Window&&) noexcept;
 
-        bool initialize();
-        void update();
-        void shutdown();
+        bool initialize() const;
+        void update() const;
+        void shutdown() const;
 
-        bool shouldClose() const;
-        void swapBuffers();
+        [[nodiscard]] bool shouldClose() const;
+        void swapBuffers() const;
 
-        unsigned int getWidth() const;
-        unsigned int getHeight() const;
-        void setSize(unsigned int width, unsigned int height);
+        [[nodiscard]] unsigned int getWidth() const;
+        [[nodiscard]] unsigned int getHeight() const;
+        void setSize(unsigned int width, unsigned int height) const;
 
-        void setTitle(const std::string& title);
-        void setVSync(bool enabled);
+        void setTitle(const std::string& title) const;
+        void setVSync(bool enabled) const;
 
-        void* getNativeWindow() const;
+        [[nodiscard]] void* getNativeWindow() const;
 
         // Event callbacks
         using ResizeCallback = std::function<void(unsigned int, unsigned int)>;
         using KeyCallback = std::function<void(int, int, int, int)>;
         using MouseCallback = std::function<void(int, int, int)>;
 
-        void setResizeCallback(ResizeCallback resizeCallback);
-        void setKeyCallback(KeyCallback keyCallback);
-        void setMouseCallback(MouseCallback mouseCallback);
+        void setResizeCallback(const ResizeCallback &resizeCallback) const;
+        void setKeyCallback(const KeyCallback &keyCallback) const;
+        void setMouseCallback(const MouseCallback &mouseCallback) const;
 
     private:
         class Impl;
