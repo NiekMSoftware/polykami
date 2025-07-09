@@ -15,6 +15,12 @@ namespace polykami::rendering {
         static Shader create(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
         ~Shader();
 
+        // === non-copyable but moveable ===
+        Shader(const Shader&) = delete;
+        Shader& operator=(const Shader&) = delete;
+        Shader(Shader&&) noexcept;
+        Shader& operator=(Shader&&) noexcept;
+
         // === Utility ===
         [[nodiscard]] unsigned int getShaderProgramID() const;
 

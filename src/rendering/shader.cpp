@@ -8,40 +8,68 @@
 #include <sstream>
 #include <iostream>
 #include <format>
+#include <filesystem>
 
 namespace polykami::rendering {
 
-    Shader::Shader(const std::string &vertexShaderSource, const std::string &fragmentShaderSource) {
-        // === read files as code
-        const std::string vertexCode = readFile(vertexShaderSource);
-        const std::string fragmentCode = readFile(fragmentShaderSource);
-        const char* vShaderCode = vertexCode.c_str();
-        const char* fShaderCode = fragmentCode.c_str();
+    Shader::Shader(const std::string &vertexShaderSource, const std::string &fragmentShaderSource) : shaderProgramID(0) {
+        try {
+            // === read files as code
+            const std::string vertexCode = readFile(vertexShaderSource);
+            const std::string fragmentCode = readFile(fragmentShaderSource);
+            const char* vShaderCode = vertexCode.c_str();
+            const char* fShaderCode = fragmentCode.c_str();
 
-        // === create and link shaders
-        const unsigned int vertex{ glCreateShader(GL_VERTEX_SHADER) };
-        glShaderSource(vertex, 1, &vShaderCode, nullptr);
-        glCompileShader(vertex);
-        checkCompilationStatus(vertex, VERTEX);
+            // === create and compile shaders
+            const unsigned int vertex{ glCreateShader(GL_VERTEX_SHADER) };
+            glShaderSource(vertex, 1, &vShaderCode, nullptr);
+            glCompileShader(vertex);
+            checkCompilationStatus(vertex, VERTEX);
 
-        const unsigned int fragment{ glCreateShader(GL_FRAGMENT_SHADER) };
-        glShaderSource(fragment, 1, &fShaderCode, nullptr);
-        glCompileShader(fragment);
-        checkCompilationStatus(fragment, FRAGMENT);
+            const unsigned int fragment{ glCreateShader(GL_FRAGMENT_SHADER) };
+            glShaderSource(fragment, 1, &fShaderCode, nullptr);
+            glCompileShader(fragment);
+            checkCompilationStatus(fragment, FRAGMENT);
 
-        shaderProgramID = { glCreateProgram() };
-        glAttachShader(shaderProgramID, vertex);
-        glAttachShader(shaderProgramID, fragment);
-        glLinkProgram(shaderProgramID);
-        checkCompilationStatus(shaderProgramID, PROGRAM);
+            // === create and link program
+            shaderProgramID = { glCreateProgram() };
+            glAttachShader(shaderProgramID, vertex);
+            glAttachShader(shaderProgramID, fragment);
+            glLinkProgram(shaderProgramID);
+            checkCompilationStatus(shaderProgramID, PROGRAM);
 
-        // === delete redundant resources
-        glDeleteShader(vertex);
-        glDeleteShader(fragment);
+            // === delete redundant resources
+            glDeleteShader(vertex);
+            glDeleteShader(fragment);
+        } catch (const std::exception&) {
+            // cleanup on failure
+            if (shaderProgramID != 0) {
+                glDeleteProgram(shaderProgramID);
+            }
+            throw;
+        }
+
     }
 
     Shader::~Shader() {
-        glDeleteProgram(shaderProgramID);
+        if (shaderProgramID != 0) {
+            glDeleteProgram(shaderProgramID);
+        }
+    }
+
+    Shader::Shader(Shader&& other) noexcept : shaderProgramID(other.shaderProgramID) {
+        other.shaderProgramID = 0;
+    }
+
+    Shader& Shader::operator=(Shader&& other) noexcept {
+        if (this != &other) {
+            if (shaderProgramID != 0) {
+                glDeleteProgram(shaderProgramID);
+            }
+            shaderProgramID = other.shaderProgramID;
+            other.shaderProgramID = 0;
+        }
+        return *this;
     }
 
     Shader Shader::create(const std::string &vertexShaderSource, const std::string &fragmentShaderSource) {
@@ -53,6 +81,12 @@ namespace polykami::rendering {
     }
 
     std::string Shader::readFile(const std::string &filePath) {
+        // ensure shader exists
+        if (!std::filesystem::exists(filePath)) {
+            std::cerr << std::format("Shader file not found: {}", filePath);
+            return "";
+        }
+
         // try to read the file
         std::ifstream file;
         file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -64,7 +98,7 @@ namespace polykami::rendering {
             file.close();
             return buffer.str();
         } catch (std::ifstream::failure &e) {
-            std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ\n" << e.what() << std::endl;
+            std::cerr << std::format("Failed to read shader file {}: {}\n", filePath, e.what()) << '\n';
             return "";
         }
     }
