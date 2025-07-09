@@ -6,6 +6,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stdexcept>
 
 namespace polykami::core {
     Polykernel::Impl::Impl() : initialized(false) { }

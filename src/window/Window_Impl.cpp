@@ -2,7 +2,8 @@
 // Created by niek on 2025/07/08.
 //
 
-#include "Window_Impl.h"
+#include "window/Window_Impl.h"
+#include <stdexcept>
 
 namespace polykami::window {
 
