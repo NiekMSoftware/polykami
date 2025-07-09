@@ -4,10 +4,14 @@
 
 #include "polykami/rendering/shader.h"
 #include <glad/glad.h>
+
+#include <format>
+#include <string>
+
 #include <fstream>
 #include <sstream>
+
 #include <iostream>
-#include <format>
 #include <filesystem>
 
 namespace polykami::rendering {
@@ -24,19 +28,19 @@ namespace polykami::rendering {
             const unsigned int vertex{ glCreateShader(GL_VERTEX_SHADER) };
             glShaderSource(vertex, 1, &vShaderCode, nullptr);
             glCompileShader(vertex);
-            checkCompilationStatus(vertex, VERTEX);
+            checkCompilationStatus(vertex, ShaderType::Vertex);
 
             const unsigned int fragment{ glCreateShader(GL_FRAGMENT_SHADER) };
             glShaderSource(fragment, 1, &fShaderCode, nullptr);
             glCompileShader(fragment);
-            checkCompilationStatus(fragment, FRAGMENT);
+            checkCompilationStatus(fragment, ShaderType::Fragment);
 
             // === create and link program
             shaderProgramID = { glCreateProgram() };
             glAttachShader(shaderProgramID, vertex);
             glAttachShader(shaderProgramID, fragment);
             glLinkProgram(shaderProgramID);
-            checkCompilationStatus(shaderProgramID, PROGRAM);
+            checkCompilationStatus(shaderProgramID, ShaderType::Program);
 
             // === delete redundant resources
             glDeleteShader(vertex);
@@ -83,8 +87,7 @@ namespace polykami::rendering {
     std::string Shader::readFile(const std::string &filePath) {
         // ensure shader exists
         if (!std::filesystem::exists(filePath)) {
-            std::cerr << std::format("Shader file not found: {}", filePath);
-            return "";
+            throw std::runtime_error(std::format("Shader file not found: {}", filePath));
         }
 
         // try to read the file
@@ -110,23 +113,25 @@ namespace polykami::rendering {
 
         switch (shaderType) {
             // retrieve compilation status
-            case VERTEX:
-            case FRAGMENT: {
+            case ShaderType::Vertex:
+            case ShaderType::Fragment: {
                 glGetShaderiv(id, GL_COMPILE_STATUS, &success);
                 if (!success) {
                     glGetShaderInfoLog(id, LOG_SIZE, nullptr, infoLog);
-                    const char* typeStr = shaderType == VERTEX ? "VERTEX" : "FRAGMENT";
-                    std::cerr << std::format("Shader compilation failed ({}): {}", typeStr, infoLog).c_str() << '\n';
+                    const char* typeStr = shaderType == ShaderType::Vertex ? "Vertex" : "Fragment";
+                    const std::string msg = std::format("Shader compilation failed ({}): {}", typeStr, infoLog);
+                    throw std::runtime_error(msg);
                 }
                 break;
             }
 
             // retrieve linking status
-            case PROGRAM: {
+            case ShaderType::Program: {
                 glGetProgramiv(id, GL_LINK_STATUS, &success);
                 if (!success) {
                     glGetProgramInfoLog(id, LOG_SIZE, nullptr, infoLog);
-                    std::cerr << std::format("Shader linking failed: {}", infoLog).c_str() << '\n';
+                    const std::string msg = std::format("Shader link failed: {}", infoLog);
+                    throw std::runtime_error(msg);
                 }
                 break;
             }
@@ -136,5 +141,47 @@ namespace polykami::rendering {
                 std::cerr << "Unsupported shader type." << '\n';
         }
     }
+
+    GLint Shader::getUniformLocation(const std::string &name) const {
+        return glGetUniformLocation(shaderProgramID, name.c_str());
+    }
+
+    // === Start of setting uniform properties ===
+    void Shader::setInt(const std::string &name, const int value) const {
+        glUniform1i(getUniformLocation(name), value);
+    }
+
+    void Shader::setFloat(const std::string &name, const float value) const {
+        glUniform1f(getUniformLocation(name), value);
+    }
+
+    void Shader::setVec2(const std::string &name, const glm::vec2 &value) const {
+        glUniform2f(getUniformLocation(name), value.x, value.y);
+    }
+
+    void Shader::setVec2(const std::string &name, const float x, const float y) const {
+        glUniform2f(getUniformLocation(name), x, y);
+    }
+
+    void Shader::setVec3(const std::string &name, const glm::vec3 &value) const {
+        glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
+    }
+
+    void Shader::setVec3(const std::string &name, const float x, const float y, const float z) const {
+        glUniform3f(getUniformLocation(name), x, y, z);
+    }
+
+    void Shader::setVec4(const std::string &name, const glm::vec4 &value) const {
+        glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
+    }
+
+    void Shader::setVec4(const std::string &name, const float x, const float y, const float z, const float w) const {
+        glUniform4f(getUniformLocation(name), x, y, z, w);
+    }
+
+    void Shader::setMat4(const std::string &name, const glm::mat4 &value) const {
+        glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &value[0][0]);
+    }
+    // === End of setting uniform properties ===
 
 }  // polykami::rendering
