@@ -17,6 +17,9 @@ namespace polykami::core {
             WindowProperties props{};
             pWindow = std::make_unique<Window>(props);
 
+            // load GLAD
+            pImpl->loadGLAD();
+
             // set viewport
             pImpl->setViewport(static_cast<int>(pWindow->getWidth()), static_cast<int>(pWindow->getHeight()));
 

@@ -32,6 +32,9 @@ namespace polykami::core {
         void setViewport(int width, int height) const;
         void clearFrame(float r = 0.2f, float g = 0.3f, float b = 0.4f, float a = 1.0f) const;
 
+        // === Getters ===
+        [[nodiscard]] Window* getWindow() const { return pWindow.get(); }
+
     private:
         // === context objects ===
         std::unique_ptr<Window> pWindow;

@@ -4,10 +4,15 @@
 
 #include "polykami/window/Window.h"
 #include "window/Window_Impl.h"
+#include <stdexcept>
 
 namespace polykami::window {
     Window::Window(const WindowProperties &props)
-        : pImpl(std::make_unique<Impl>(props)) { }
+        : pImpl(std::make_unique<Impl>(props)) {
+        if (!initialize()) {
+            throw std::runtime_error("Failed to initialize window");
+        }
+    }
 
     Window::~Window() {
         pImpl->shutdown();

@@ -8,6 +8,13 @@
 int main() {
     try {
         polykami::core::Polykernel kernel;
+
+        while (!kernel.getWindow()->shouldClose()) {
+            kernel.getWindow()->update();
+            kernel.clearFrame();
+            kernel.getWindow()->swapBuffers();
+        }
+        
     } catch (...) {
         std::cerr << "Failed to initialize Polykernel" << std::endl;
     }

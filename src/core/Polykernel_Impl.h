@@ -15,6 +15,7 @@ namespace polykami::core {
         ~Impl();
 
         void initializeOpenGL();
+        void loadGLAD();
         void cleanup();
 
         // === OpenGL functions
