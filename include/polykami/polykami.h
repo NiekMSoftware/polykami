@@ -7,5 +7,6 @@
 
 #include <polykami/core/Polykernel.h>
 #include <polykami/window/Window.h>
+#include <polykami/rendering/shader.h>
 
 #endif //POLYKAMI_H
