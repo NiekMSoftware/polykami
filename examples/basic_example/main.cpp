@@ -7,7 +7,7 @@
 
 int main() {
     try {
-        polykami::core::Polykernel kernel;
+        polykami::core::polykernel kernel;
 
         while (!kernel.getWindow()->shouldClose()) {
             kernel.getWindow()->update();

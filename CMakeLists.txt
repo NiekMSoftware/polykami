@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # option to build examples
-option(POLYKAMI_BUILD_EXAMPLES "Build examples" OFF)
+option(POLYKAMI_BUILD_EXAMPLES "Build examples" ON)
 
 # libraries
 add_subdirectory(extern)
@@ -15,5 +15,5 @@ add_subdirectory(src)
 
 # build examples if enabled
 if (POLYKAMI_BUILD_EXAMPLES)
-    add_subdirectory(examples)
 endif ()
+add_subdirectory(examples)

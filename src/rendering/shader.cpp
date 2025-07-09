@@ -106,7 +106,7 @@ namespace polykami::rendering {
         }
     }
 
-    void Shader::checkCompilationStatus(const GLuint id, const ShaderType shaderType) {
+    void Shader::checkCompilationStatus(const unsigned int id, const ShaderType shaderType) {
         GLint success;
         constexpr size_t LOG_SIZE{ 512 };
         char infoLog[LOG_SIZE];
@@ -142,7 +142,7 @@ namespace polykami::rendering {
         }
     }
 
-    GLint Shader::getUniformLocation(const std::string &name) const {
+    int Shader::getUniformLocation(const std::string &name) const {
         return glGetUniformLocation(shaderProgramID, name.c_str());
     }
 

@@ -6,7 +6,6 @@
 #define SHADER_H
 
 #include <string>
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 
 namespace polykami::rendering {
@@ -43,7 +42,7 @@ namespace polykami::rendering {
 
         static std::string readFile(const std::string& filePath);
         static void checkCompilationStatus(unsigned int id, ShaderType shaderType);
-        [[nodiscard]] GLint getUniformLocation(const std::string& name) const;
+        [[nodiscard]] int getUniformLocation(const std::string& name) const;
 
         unsigned int shaderProgramID;
     };
