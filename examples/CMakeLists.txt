@@ -1,1 +1,1 @@
-add_subdirectory(demo_context)
+add_subdirectory(basic_example)
