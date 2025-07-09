@@ -19,17 +19,17 @@ namespace polykami::rendering {
         const char* fShaderCode = fragmentCode.c_str();
 
         // === create and link shaders
-        const unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
+        const unsigned int vertex{ glCreateShader(GL_VERTEX_SHADER) };
         glShaderSource(vertex, 1, &vShaderCode, nullptr);
         glCompileShader(vertex);
         checkCompilationStatus(vertex, VERTEX);
 
-        const unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
+        const unsigned int fragment{ glCreateShader(GL_FRAGMENT_SHADER) };
         glShaderSource(fragment, 1, &fShaderCode, nullptr);
         glCompileShader(fragment);
         checkCompilationStatus(fragment, FRAGMENT);
 
-        shaderProgramID = glCreateProgram();
+        shaderProgramID = { glCreateProgram() };
         glAttachShader(shaderProgramID, vertex);
         glAttachShader(shaderProgramID, fragment);
         glLinkProgram(shaderProgramID);
@@ -45,7 +45,7 @@ namespace polykami::rendering {
     }
 
     Shader Shader::create(const std::string &vertexShaderSource, const std::string &fragmentShaderSource) {
-        return Shader(vertexShaderSource, fragmentShaderSource);
+        return Shader{ vertexShaderSource, fragmentShaderSource };
     }
 
     unsigned int Shader::getShaderProgramID() const {
@@ -71,32 +71,36 @@ namespace polykami::rendering {
 
     void Shader::checkCompilationStatus(const GLuint id, const ShaderType shaderType) {
         GLint success;
-        constexpr size_t LOG_SIZE = 512;
+        constexpr size_t LOG_SIZE{ 512 };
         char infoLog[LOG_SIZE];
 
-        // retrieve compilation status
-        if (shaderType == VERTEX || shaderType == FRAGMENT) {
-            glGetShaderiv(id, GL_COMPILE_STATUS, &success);
-            if (!success) {
-                glGetShaderInfoLog(id, LOG_SIZE, nullptr, infoLog);
-                const char* typeStr = shaderType == VERTEX ? "VERTEX" : "FRAGMENT";
-                std::cerr << std::format("Shader compilation failed ({}): {}", typeStr, infoLog).c_str() << '\n';
-                return;
+        switch (shaderType) {
+            // retrieve compilation status
+            case VERTEX:
+            case FRAGMENT: {
+                glGetShaderiv(id, GL_COMPILE_STATUS, &success);
+                if (!success) {
+                    glGetShaderInfoLog(id, LOG_SIZE, nullptr, infoLog);
+                    const char* typeStr = shaderType == VERTEX ? "VERTEX" : "FRAGMENT";
+                    std::cerr << std::format("Shader compilation failed ({}): {}", typeStr, infoLog).c_str() << '\n';
+                }
+                break;
             }
-        }
 
-        // retrieve linking status
-        if (shaderType == PROGRAM) {
-            glGetProgramiv(id, GL_LINK_STATUS, &success);
-            if (!success) {
-                glGetProgramInfoLog(id, LOG_SIZE, nullptr, infoLog);
-                std::cerr << std::format("Shader linking failed: {}", infoLog).c_str() << '\n';
-                return;
+            // retrieve linking status
+            case PROGRAM: {
+                glGetProgramiv(id, GL_LINK_STATUS, &success);
+                if (!success) {
+                    glGetProgramInfoLog(id, LOG_SIZE, nullptr, infoLog);
+                    std::cerr << std::format("Shader linking failed: {}", infoLog).c_str() << '\n';
+                }
+                break;
             }
-        }
 
-        // notify user there's an unsupported shader
-        std::cerr << "Unsupported shader type." << '\n';
+            // notify user there's an unsupported shader
+            default:
+                std::cerr << "Unsupported shader type." << '\n';
+        }
     }
 
 }  // polykami::rendering
