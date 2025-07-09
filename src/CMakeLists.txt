@@ -1,8 +1,8 @@
 # Collect all source files
 set(POLYKAMI_SOURCES
-        # Core - Window
-        core/window/Window.cpp
-        core/window/Window_Impl.cpp
+        # Window
+        window/Window.cpp
+        window/Window_Impl.cpp
 )
 
 # Create the library

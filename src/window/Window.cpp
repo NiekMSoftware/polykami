@@ -2,10 +2,10 @@
 // Created by niek on 2025/07/08.
 //
 
-#include "polykami/core/window/Window.h"
-#include "core/window/Window_Impl.h"
+#include "polykami/window/Window.h"
+#include "window/Window_Impl.h"
 
-namespace polykami::core::window {
+namespace polykami::window {
     Window::Window(const WindowProperties &props)
         : pImpl(std::make_unique<Impl>(props)) { }
 

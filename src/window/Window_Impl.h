@@ -5,10 +5,10 @@
 #ifndef WINDOW_IMPL_H
 #define WINDOW_IMPL_H
 
-#include "polykami/core/window/Window.h"
+#include "polykami/window/Window.h"
 #include <GLFW/glfw3.h>
 
-namespace polykami::core::window {
+namespace polykami::window {
 
     class Window::Impl {
     public:
@@ -49,6 +49,6 @@ namespace polykami::core::window {
         static void glfwMouseCallback(GLFWwindow* window, int button, int action, int mods);
     };
 
-}  // polykami::core::window
+}  // polykami::window
 
 #endif //WINDOW_IMPL_H

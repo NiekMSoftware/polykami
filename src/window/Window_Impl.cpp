@@ -4,7 +4,8 @@
 
 #include "Window_Impl.h"
 
-namespace polykami::core::window {
+namespace polykami::window {
+
     Window::Impl::Impl(const WindowProperties &properties)
         : window(nullptr), resizeCallback(nullptr), keyCallback(nullptr), mouseCallback(nullptr) {
         this->properties = properties;

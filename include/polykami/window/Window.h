@@ -9,7 +9,7 @@
 #include <string>
 #include <functional>
 
-namespace polykami::core::window {
+namespace polykami::window {
 
     struct WindowProperties {
         std::string title = "Polykami Window";
