@@ -4,10 +4,31 @@
 
 #include "polykami/core/Polykernel.h"
 #include "core/Polykernel_Impl.h"
+#include <iostream>
 
 namespace polykami::core {
 
-    Polykernel::Polykernel() : pImpl(std::make_unique<Impl>()) { }
+    Polykernel::Polykernel() : pImpl(std::make_unique<Impl>()) {
+        try {
+            // initialize OpenGL
+            pImpl->initializeOpenGL();
+
+            // initialize window
+            WindowProperties props{};
+            pWindow = std::make_unique<Window>(props);
+
+            // set viewport
+            pImpl->setViewport(static_cast<int>(pWindow->getWidth()), static_cast<int>(pWindow->getHeight()));
+
+        } catch (const std::exception& e) {
+            std::cerr << "Failed to initialize Polykernel: " << e.what() << std::endl;
+            throw;
+        } catch (...) {
+            std::cerr << "Unknown exception thrown" << std::endl;
+            throw;
+        }
+    }
+
     Polykernel::~Polykernel() {
         pImpl->cleanup();
     }
