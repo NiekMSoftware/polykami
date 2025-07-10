@@ -10,6 +10,7 @@ set(POLYKAMI_SOURCES
 
         # Rendering
         rendering/shader.cpp
+        rendering/texture.cpp
 )
 
 # Create the library
