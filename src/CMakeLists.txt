@@ -3,6 +3,8 @@ set(POLYKAMI_SOURCES
         # Core
         core/Polykernel.cpp
         core/Polykernel_Impl.cpp
+        core/camera.cpp
+        core/camera_impl.cpp
 
         # Window
         window/Window.cpp
